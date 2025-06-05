@@ -22,7 +22,7 @@ namespace PrivatBankLibrary.Classes
             {
                 using (IDbConnection dbConnection = new SqlConnection(_connectionString))
                 {
-                    return dbConnection.Query<User>($"SELECT * FROM Users").ToList();
+                    return dbConnection.Query<User>("SELECT * FROM Users").ToList();
                 }
             }
         
@@ -30,7 +30,9 @@ namespace PrivatBankLibrary.Classes
             {
                 using (IDbConnection dbConnection = new SqlConnection(_connectionString))
                 {
-                    dbConnection.Query<User>($"INSERT INTO Users (Login, Password, RegisterDate) values('{user.Login}', '{user.Password}', '{user.RegisterDate}')");
+                    dbConnection.Execute(
+                        "INSERT INTO Users (Login, Password, RegisterDate) VALUES (@Login, @Password, @RegisterDate)",
+                        new { user.Login, user.Password, user.RegisterDate });
                 }
             }
         
@@ -38,7 +40,9 @@ namespace PrivatBankLibrary.Classes
             {
                 using (IDbConnection dbConnection = new SqlConnection(_connectionString))
                 {
-                    dbConnection.Query<User>($"UPDATE Users SET Password='{input}' WHERE Login='{user.Login}'");
+                    dbConnection.Execute(
+                        "UPDATE Users SET Password=@Password WHERE Login=@Login",
+                        new { Password = input, Login = user.Login });
                 }
             }
         
@@ -46,7 +50,9 @@ namespace PrivatBankLibrary.Classes
             {
                 using (IDbConnection dbConnection = new SqlConnection(_connectionString))
                 {
-                    dbConnection.Query<User>($"UPDATE Users SET Name = '{user.Name}', Surname='{user.Surname}', Patronymic='{user.Patronymic}', Email='{user.Email}' WHERE Login='{user.Login}'");
+                    dbConnection.Execute(
+                        "UPDATE Users SET Name=@Name, Surname=@Surname, Patronymic=@Patronymic, Email=@Email WHERE Login=@Login",
+                        new { user.Name, user.Surname, user.Patronymic, user.Email, user.Login });
                 }
             }
         
@@ -54,7 +60,9 @@ namespace PrivatBankLibrary.Classes
             {
                 using (IDbConnection dbConnection = new SqlConnection(_connectionString))
                 {
-                    dbConnection.Query<User>($"DELETE FROM Users WHERE Login='{input}'");
+                    dbConnection.Execute(
+                        "DELETE FROM Users WHERE Login=@Login",
+                        new { Login = input });
                 }
             }
 
@@ -62,7 +70,9 @@ namespace PrivatBankLibrary.Classes
             {
                 using (IDbConnection dbConnection = new SqlConnection(_connectionString))
                 {
-                    return dbConnection.Query<User>($"SELECT * FROM Users WHERE Login='{input}'").ToList();
+                    return dbConnection.Query<User>(
+                        "SELECT * FROM Users WHERE Login=@Login",
+                        new { Login = input }).ToList();
                 }
             }
         }

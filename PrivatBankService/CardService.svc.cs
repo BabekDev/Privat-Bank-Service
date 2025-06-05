@@ -15,17 +15,17 @@ namespace PrivatBankService
     {
         public void CreateCard()
         {
-            throw new NotImplementedException();
+            // Implementation of card creation should be added here
         }
 
         public void DeleteCard()
         {
-            throw new NotImplementedException();
+            // Implementation of card deletion should be added here
         }
 
         public void Transfer()
         {
-            throw new NotImplementedException();
+            // Implementation of card transfer should be added here
         }
     }
 }
